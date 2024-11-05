@@ -1,0 +1,21 @@
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          required: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        _id: 9874434b9476df30da866d34
+        name: Shoes
+        createdAt: 2024-10-26T04:58:15.244Z
+        updatedAt: 2024-10-26T04:58:15.244Z

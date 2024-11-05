@@ -1,0 +1,380 @@
+components:
+  schemas:
+    # ========      Server info       ========
+    # Handling server errors (response array & object)
+    ValidationError:
+      type: object
+      properties:
+        field:
+          type: string
+        type:
+          type: string
+        message:
+          type: string
+      example:
+        field:
+          summary: The name of the field sent by user
+          value: fieldName
+        type:
+          summary: Description about the kind of error
+          value: errorType
+        message:
+          summary: A brief description related with validation error
+          value: The format of value must be a valid data type
+    ValidationErrors:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationError"
+    ServerError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            status:
+              type: number
+            type:
+              type: string
+      example:
+        error:
+          message:
+            summary: A brief description about server error
+            value: The server detects a set of potential issues
+          status:
+            summary: The code number about server status of availability
+            value: 404
+          type:
+            summary: The kind of server error
+            value: RESOURCE_NOT_FOUND
+    # ========      Auth info       ========
+    # Handling auth messages (response array, object, schemas, etc.)
+    AuthSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message:
+          summary: Message related with authentication process
+          value: The authentication was processed without any error
+    UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          required: true
+        password:
+          type: string
+          required: true
+          format: password
+      example:
+        email: email@domain.com
+        password: somesecurepassword
+    UserRegistration:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        lastName:
+          type: string
+        password:
+          type: string
+          format: password
+        confirmationPassword:
+          type: string
+          format: password
+        image:
+          type: string
+      required:
+        - email
+        - name
+        - lastName
+        - password
+        - confirmationPassword
+      example:
+        email: email@domain.com
+        name: Francisco
+        lastName: Smith
+        password: somesecurepassword
+        confirmationPassword: somesecurepassword
+    # ========      Product module       ========
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          required: true
+        description:
+          type: string
+          required: true
+        images:
+          type: array
+          items:
+            type: string
+        price:
+          type: object
+          properties:
+            sale:
+              type: number
+            purchase:
+              type: number
+            priceType: # retail & wholesale
+              type: string
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+        stock:
+          type: number
+        status:
+          type: boolean
+        quantity:
+          type: number
+        suppliers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Supplier"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time
+      example:
+        _id: 6714434b9476df30da866d20
+        name: Blue shoes
+        description: A nice and ergonimic shoes.
+        images: ["shoes.jpg"]
+        price:
+          sale: 30.50
+          purchase: 10.25
+          priceType: retail
+        categories:
+          - _id: 9874434b9476df30da866d34
+            name: Shoes
+            createdAt: 2024-10-26T04:58:15.244Z
+            updatedAt: 2024-10-26T04:58:15.244Z
+        stock: 10
+        status: true
+        quantity: 5
+        suppliers:
+          - _id: 1484434b9476df30da866d90
+            name: Organization A
+            images:
+              - organization-a.jpg
+            address:
+              postalCode: 27121
+              street: Street A
+              city: Chicago
+              no: 567
+              neighborhood: Place A
+            contact:
+              email: organization.a@domain.com
+              phoneNumber: 234-323-323-1
+              socialMedia:
+                - organization@socialmedia
+                - organization-a@socialmedia
+            description: A brief info about organization.
+            createdAt: 2024-10-26T04:58:15.244Z
+            updatedAt: 2024-10-26T04:58:15.244Z
+            deletedAt: null
+        createdAt: 2024-10-26T04:58:15.244Z
+        updatedAt: 2024-10-26T04:58:15.244Z
+        deletedAt: null
+    Products:
+      type: array
+      items:
+        $ref: "#/components/schemas/Product"
+    ProductForm:
+      type: object
+      properties:
+        name:
+          type: string
+          required: true
+        description:
+          type: string
+          required: true
+        images:
+          type: array
+          items:
+            type: string
+        price:
+          type: object
+          properties:
+            sale:
+              type: number
+            purchase:
+              type: number
+            priceType: # retail & wholesale
+              type: string
+        categories:
+          type: array
+          items:
+            type: string
+        stock:
+          type: number
+        status:
+          type: boolean
+        quantity:
+          type: number
+        suppliers:
+          type: array
+          items:
+            type: string
+      example:
+        name: Blue shoes
+        description: A nice and ergonimic shoes.
+        images: ["shoes.jpg"]
+        price:
+          sale: 30.50
+          purchase: 10.25
+          priceType: retail
+        categories:
+          [
+            6714434b9476df30da866d20,
+            6714434b9476df30da866d50,
+            6714434b9476df30da866d80,
+          ]
+        stock: 10
+        status: true
+        quantity: 5
+        suppliers:
+          [
+            6714434b9476df30da866d20,
+            6714434b9476df30da866d50,
+            6714434b9476df30da866d80,
+          ]
+    # ========      Supplier module       ========
+    Supplier:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+        address:
+          type: object
+          properties:
+            postalCode:
+              type: number
+            street:
+              type: string
+            city:
+              type: string
+            no:
+              type: number
+            neighborhood:
+              type: string
+        contact:
+          type: object
+          properties:
+            email:
+              type: string
+            phoneNumber:
+              type: string
+            socialMedia:
+              type: array
+              items:
+                type: string
+        description:
+          type: string
+      example:
+        _id: 1484434b9476df30da866d90
+        name: Organization A
+        images:
+          - organization-a.jpg
+        address:
+          postalCode: 27121
+          street: Street A
+          city: Chicago
+          no: 567
+          neighborhood: Place A
+        contact:
+          email: organization.a@domain.com
+          phoneNumber: 234-323-323-1
+          socialMedia:
+            - organization@socialmedia
+            - organization-a@socialmedia
+        description: A brief info about organization.
+    Suppliers:
+      type: object
+      properties:
+        suppliers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Supplier"
+    SupplierForm:
+      type: object
+      properties:
+        name:
+          type: string
+          required: true
+        description:
+          type: string
+          required: true
+        images:
+          type: array
+          items:
+            type: string
+        price:
+          type: object
+          properties:
+            sale:
+              type: number
+            purchase:
+              type: number
+            priceType: # retail & wholesale
+              type: string
+        categories:
+          type: array
+          items:
+            type: string
+        stock:
+          type: number
+        status:
+          type: boolean
+        quantity:
+          type: number
+        suppliers:
+          type: array
+          items:
+            type: string
+      example:
+        name: Blue shoes
+        description: A nice and ergonimic shoes.
+        images: ["shoes.jpg"]
+        price:
+          sale: 30.50
+          purchase: 10.25
+          priceType: retail
+        categories:
+          [
+            9874434b9476df30da866d34,
+            9874434b9476df30da866d39,
+            9874434b9476df30da866d32,
+          ]
+        stock: 10
+        status: true
+        quantity: 5
+        suppliers:
+          [
+            9874434b9476df30da866d34,
+            9874434b9476df30da866d39,
+            9874434b9476df30da866d32,
+          ]

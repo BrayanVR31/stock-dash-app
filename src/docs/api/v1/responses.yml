@@ -1,0 +1,45 @@
+responses:
+  # ========      Responses info       ========
+  # Handling responses format (json format)
+  ErrorValidationSchema:
+    description: An array of objects with all specific validation errors (data)
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ValidationErrors"
+  UnauthorizedResource:
+    description: Return an object with information about access denied
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/ServerError"
+  AuthLogin:
+    description: Returns a message with request status about authentication token (JWT)
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/AuthSuccess"
+  AuthLogout:
+    description: Returns a simple message displaying the logout status
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/AuthSuccess"
+  ProductResources:
+    description: Returns an array of items saved on database
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Products"
+  ProductResource:
+    description: Returns an object of product saved on database
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Product"
+  SupplierResources:
+    description: Returns a list of suppliers
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Suppliers"

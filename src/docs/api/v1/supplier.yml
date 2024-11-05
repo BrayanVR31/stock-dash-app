@@ -1,0 +1,57 @@
+components:
+  schemas:
+    Supplier:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+        address:
+          type: object
+          properties:
+            postalCode:
+              type: number
+            street:
+              type: string
+            city:
+              type: string
+            no:
+              type: number
+            neighborhood:
+              type: string
+        contact:
+          type: object
+          properties:
+            email:
+              type: string
+            phoneNumber:
+              type: string
+            socialMedia:
+              type: array
+              items:
+                type: string
+        description:
+          type: string
+      example:
+        _id: 1484434b9476df30da866d90
+        name: Organization A
+        images:
+          - organization-a.jpg
+        address:
+          postalCode: 27121
+          street: Street A
+          city: Chicago
+          no: 567
+          neighborhood: Place A
+        contact:
+          email: organization.a@domain.com
+          phoneNumber: 234-323-323-1
+          socialMedia:
+            - organization@socialmedia
+            - organization-a@socialmedia
+        description: A brief info about organization.

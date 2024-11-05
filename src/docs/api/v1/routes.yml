@@ -1,0 +1,159 @@
+tags:
+  - name: authentication
+    description: Authentication operations available by signed user
+  - name: products
+    description: Product operation to manage registered items from stock
+  - name: suppliers
+    description: Manage all suppliers information
+# Authentication routes
+/sign-in:
+  post:
+    tags:
+      - authentication
+    summary: Verify credentials and create authentication token in cookie session
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UserLogin"
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: "#/components/schemas/UserLogin"
+    responses:
+      "200":
+        $ref: "#/responses/AuthLogin"
+      "400":
+        $ref: "#/responses/ErrorValidationSchema"
+      "401":
+        $ref: "#/responses/UnauthorizedResource"
+/sign-up:
+  post:
+    tags:
+      - authentication
+    summary: Register credentials in the system (only users with role's allowed)
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UserRegistration"
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: "#/components/schemas/UserRegistration"
+    responses:
+      "200":
+        $ref: "#/responses/AuthLogin"
+      "400":
+        $ref: "#/responses/ErrorValidationSchema"
+/logout:
+  get:
+    tags:
+      - authentication
+    summary: Logout of current user session
+    responses:
+      "200":
+        $ref: "#/responses/AuthLogout"
+      "401":
+        $ref: "#/responses/UnauthorizedResource"
+# Dashboard routes
+# ------------- product's module -------------
+/products:
+  get:
+    tags:
+      - products
+    summary: Return a list of created products
+    responses:
+      "200":
+        $ref: "#/responses/ProductResources"
+  post:
+    tags:
+      - products
+    summary: Create a new product
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProductForm"
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: "#/components/schemas/ProductForm"
+    responses:
+      "200":
+        $ref: "#/responses/ProductResource"
+      "400":
+        $ref: "#/responses/ErrorValidationSchema"
+/products/{id}:
+  get:
+    tags:
+      - products
+    summary: Return a specific product by id
+    responses:
+      "200":
+        $ref: "#/responses/ProductResource"
+  parameters:
+    - name: id
+      in: path
+      description: ID of product
+      required: true
+      schema:
+        type: string
+      style: simple
+  patch:
+    tags:
+      - products
+    summary: Update a product specified by id reference
+    responses:
+      "200":
+        $ref: "#/responses/ProductResource"
+      "400":
+        $ref: "#/responses/ErrorValidationSchema"
+  delete:
+    tags:
+      - products
+    summary: Delete a product using id reference
+    responses:
+      "204":
+        description: The product item was deleted successfully
+# ------------- supplier's module -------------
+/suppliers:
+  get:
+    tags:
+      - suppliers
+    summary: Retrieve all suppliers data
+    responses:
+      "200":
+        $ref: "#/responses/SupplierResources"
+      "401":
+        $ref: "#/responses/UnauthorizedResource"
+  post:
+    tags:
+      - suppliers
+    summary: Retrive an object of suppliers
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SupplierForm"
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: "#/components/schemas/SupplierForm"
+    responses:
+      "401":
+        $ref: "#/responses/UnauthorizedResource"
+/suppliers/{id}:
+  get:
+    tags:
+      - suppliers
+    summary: Retrieve a sigle object of supplier
+    responses:
+      "200":
+        $ref: "#/responses/SupplierResource"
+      "401":
+        $ref: "#/responses/UnauthorizedResource"
+  parameters:
+    - name: id
+      in: path
+      description: ID of supplier
+      required: true
+      schema:
+        type: string
+      style: simple
